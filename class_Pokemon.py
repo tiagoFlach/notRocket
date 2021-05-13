@@ -57,10 +57,8 @@ class Pokemon_Class:
     # Função save()
     # Salva o objeto através das funções pickle
     def save(self):
-        # file = ('pokemons.pickle')
-        file = 'pokemons/' + str(hash(self))
-
-        database = open(file, 'wb', protocol = pickle.HIGHEST_PROTOCOL)
+        file = ('pokemons.pkl')
+        database = open(file, 'ab')
         pickle.dump(self, database)
         database.close()
 

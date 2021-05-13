@@ -16,8 +16,6 @@ from class_Ability import Ability_Class
 from class_Pokemon import Pokemon_Class
 
 
-
-
 # Funções
 # ------------------------------------------------------------------------------
 def createDatabase():
@@ -26,6 +24,9 @@ def createDatabase():
     file_name = 'pokemon.csv'
     file_path = join(current_dir, file_name)
     
+    # database = open('pokemons.pkl', 'wb')
+    # database.close()
+
     with open(file_name, 'r', encoding='utf16') as dataset:
         reader = csv.DictReader(dataset, delimiter='\t')
 
@@ -39,11 +40,17 @@ def createDatabase():
             weight  = row['weight_kg']
 
             pokemon.create(number, name, hp, attack, defense, height, weight)
-
-            pokemonsName.insert(pokemon.nome, pokemon.num)
+            pokemon.save()
+            # pokemonsName.insert(pokemon.nome, pokemon.num)
 
             # pokemon.save()
             # database.append(hash)
+
+def createTrieName():
+    
+    pass
+
+
 
 # Salva os dados em arquivo pickle
 def storeData(file, data):      
@@ -51,37 +58,47 @@ def storeData(file, data):
     pickle.dump(data, dbfile)                     
     dbfile.close()
 
-def loadData():
+def loadData(file):
     # for reading also binary mode is important
-    dbfile = open('examplePickle', 'rb')     
-    db = pickle.load(dbfile)
-    for keys in db:
-        print(keys, '=>', db[keys])
-    dbfile.close()
+    data = []
+    with open(file + '.pkl', 'rb') as db:
+        while True:
+            try:
+                data.append(pickle.load(db))
+            except EOFError:
+                break
+
+    return data
 
 
 # Main
 # ------------------------------------------------------------------------------
-pokemonsName = Trie()
+print('  _____      _            _            ')
+print(' |  __ \    | |          | |           ')
+print(' | |__) |__ | | _____  __| | _____  __ ')
+print(' |  ___/ _ \| |/ / _ \/ _` |/ _ \ \/ / ')
+print(' | |  | (_) |   <  __/ (_| |  __/>  <  ')
+print(' |_|   \___/|_|\_\___|\__,_|\___/_/\_\ \n')
+
 
 createDatabase()
-storeData('trie_Pokemon_Nome', pokemonsName)
-
-l = pokemonsName.search("Char")
-print(l)
 
 
+pokemons = loadData('pokemons')
+trie = Trie()
+for pokemon in pokemons:
+    trie.insert(pokemon.nome, pokemon.num)
 
+storeData('trie_Pokemon_Nome', trie)
 
+buscaNome = input('Pesquise por um Pokemon: ')
+busca = trie.search(buscaNome)
 
-
-
-# for i in database:
-#     file = 'pokemons/' + str(i)
-#     # file = 'pokemons.pickle'
-#     pokemon = pickle.load(open(file, 'rb'))
-#     pokemon.print()
-
+for item in busca:
+    for pokemon in pokemons:
+        if pokemon.num == item:
+            pokemon.print()
+            break
 
 # Print the tree
 # def printTree(tree):
