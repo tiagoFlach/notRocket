@@ -60,7 +60,7 @@ class Pokemon_Class:
         # file = ('pokemons.pickle')
         file = 'pokemons/' + str(hash(self))
 
-        database = open(file, 'wb')
+        database = open(file, 'wb', protocol = pickle.HIGHEST_PROTOCOL)
         pickle.dump(self, database)
         database.close()
 

@@ -8,16 +8,19 @@ import pandas as pd
 
 # Classes
 # ------------------------------------------------------------------------------
+from class_Node import Node
+# from class_BPlusTree import BPlusTree
+from class_Trie import Trie
+
 from class_Ability import Ability_Class
 from class_Pokemon import Pokemon_Class
-from class_Node import Node
-from class_BTree import BTree
+
+
 
 
 # Funções
 # ------------------------------------------------------------------------------
-def create_database():
-    # pokemon = Pokemon_Class(1000)
+def createDatabase():
     pokemon = Pokemon_Class()
     current_dir = dirname(__file__)
     file_name = 'pokemon.csv'
@@ -36,20 +39,105 @@ def create_database():
             weight  = row['weight_kg']
 
             pokemon.create(number, name, hp, attack, defense, height, weight)
-            hash = pokemon.save()
-            database.append(hash)
+
+            pokemonsName.insert(pokemon.nome, pokemon.num)
+
+            # pokemon.save()
+            # database.append(hash)
+
+# Salva os dados em arquivo pickle
+def storeData(file, data):      
+    dbfile = open(file + '.pkl', 'wb')
+    pickle.dump(data, dbfile)                     
+    dbfile.close()
+
+def loadData():
+    # for reading also binary mode is important
+    dbfile = open('examplePickle', 'rb')     
+    db = pickle.load(dbfile)
+    for keys in db:
+        print(keys, '=>', db[keys])
+    dbfile.close()
 
 
-# Principal
+# Main
 # ------------------------------------------------------------------------------
-database = list()
-create_database()
+pokemonsName = Trie()
 
-for i in database:
-    file = 'pokemons/' + str(i)
-    # file = 'pokemons.pickle'
-    pokemon = pickle.load(open(file, 'rb'))
-    pokemon.print()
+createDatabase()
+storeData('trie_Pokemon_Nome', pokemonsName)
+
+l = pokemonsName.search("Char")
+print(l)
+
+
+
+
+
+
+
+# for i in database:
+#     file = 'pokemons/' + str(i)
+#     # file = 'pokemons.pickle'
+#     pokemon = pickle.load(open(file, 'rb'))
+#     pokemon.print()
+
+
+# Print the tree
+# def printTree(tree):
+#     lst = [tree.root]
+#     level = [0]
+#     leaf = None
+#     flag = 0
+#     lev_leaf = 0
+
+#     node1 = Node(str(level[0]) + str(tree.root.values))
+
+#     while (len(lst) != 0):
+#         x = lst.pop(0)
+#         lev = level.pop(0)
+#         if (x.check_leaf == False):
+#             for i, item in enumerate(x.keys):
+#                 print(item.values)
+#         else:
+#             for i, item in enumerate(x.keys):
+#                 print(item.values)
+#             if (flag == 0):
+#                 lev_leaf = lev
+#                 leaf = x
+#                 flag = 1
+
+
+# record_len = 3
+# BPlusTree = BPlusTree(record_len)
+# BPlusTree.insert('5', '33')
+# BPlusTree.insert('15', '21')
+# BPlusTree.insert('25', '31')
+# BPlusTree.insert('35', '41')
+# BPlusTree.insert('45', '10')
+
+# printTree(BPlusTree)
+
+# if(BPlusTree.find('5', '34')):
+#     print("Found")
+# else:
+#     print("Not found")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #, nome, num, hp, atk, deff, peso, altura,

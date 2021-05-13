@@ -1,21 +1,19 @@
-#coding=UTF-8
-
-#Nodo da árvore trie
+# Nodo da árvore trie
 class Trie:
 	def __init__(self, char = '', children = [], isLeaf = False, value = None):
-		#Char do nodo atual
+		# Char do nodo atual
 		self.char = char
 	
-		#Lista de ponteiros p/ os nodos filhos
+		# Lista de ponteiros p/ os nodos filhos
 		self.children = []
 		
-		#Booleano que indica se é folha ou não
+		# Booleano que indica se é folha ou não
 		self.isLeaf = False
 		
-		#Valor (caso seja folha)
+		# Valor (caso seja folha)
 		self.value = None
 		
-	#Função que insere uma palavra na trie
+	# Função que insere uma palavra na trie
 	def insert(self, word, value):
 		nodo = self
 		
@@ -34,7 +32,8 @@ class Trie:
 				
 		nodo.isLeaf = True
 		nodo.value = value
-		
+	
+	# Função de busca por prefixo
 	def search(self, prefix):
 		nodo = self
 		lista = []
@@ -76,15 +75,3 @@ class Trie:
 
 	def __str__(self):
 		return str(self.listWords(""))
-
-
-t =Trie()
-t.insert("Bulbassaur",1)
-t.insert("Ivysaur",2)
-t.insert("Charmander",4)
-t.insert("Charmeleon",5)
-t.insert("Charizard",6)
-
-
-l = t.search("Char")
-print(l)
